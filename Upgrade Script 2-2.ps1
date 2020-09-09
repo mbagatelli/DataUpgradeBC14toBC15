@@ -51,7 +51,7 @@ Restart-NAVServerInstance -ServerInstance $ServerInstance
 Write-Host "9. Application Build Increase"
 Set-NAVApplication -ServerInstance $ServerInstance -ApplicationVersion $BC15Version -Force
 
-Write-Host "10. Publish Symbols & Extendions"
+Write-Host "10. Publishing Symbols & Extendions"
 Publish-NAVApp -ServerInstance $ServerInstance -Path $SystemAppPath -PackageType SymbolsOnly
 Publish-NAVApp -ServerInstance $ServerInstance -Path $MicrosoftSysPath
 Publish-NAVApp -ServerInstance $ServerInstance -Path $BaseAppPath -SkipVerification
@@ -75,7 +75,7 @@ Start-NAVDataUpgrade -ServerInstance $ServerInstance -FunctionExecutionMode Seri
 Write-Host "Pausing for 4minutes"
 Start-Sleep -Seconds 240
 
-Write-Host "14. Instalar 3rd party"
+Write-Host "14. Install 3rd party"
 Install-NAVApp -ServerInstance $ServerInstance -Name "BC14toBC15" -Version $CustomAppVersion
 
 Write-Host "15. Enable task scheduler"
