@@ -3,7 +3,7 @@ $DatabaseServer       = "localhost"
 $DatabaseName         = "GTOGHERMIGRATEDBV14" 
 $ServiceName          = "BC140"                        ## Name of Service Mapped to Business Central 14 Database.
 $DeveloperLicenseFile = "C:\Temp\MSDynLicenses\5190281 - D365BC 150 DEV.flf"   ## Developer License
-$NavIde = "C:\Program Files (x86)\Microsoft Dynamics 365 Business Central\140\RoleTailored Client\finsql.exe"
+$NavIde               = "C:\Program Files (x86)\Microsoft Dynamics 365 Business Central\140\RoleTailored Client\finsql.exe"
 ######################
 
 Write-Host "1. Importing BC14 Powershell Module"

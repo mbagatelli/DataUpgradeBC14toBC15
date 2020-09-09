@@ -51,7 +51,7 @@ Restart-NAVServerInstance -ServerInstance $ServerInstance
 Write-Host "9. Application Build Increase"
 Set-NAVApplication -ServerInstance $ServerInstance -ApplicationVersion $BC15Version -Force
 
-Write-Host "10. Publishing Symbols & Extendions"
+Write-Host "10. Publishing Symbols & Extensions"
 Publish-NAVApp -ServerInstance $ServerInstance -Path $SystemAppPath -PackageType SymbolsOnly
 Publish-NAVApp -ServerInstance $ServerInstance -Path $MicrosoftSysPath
 Publish-NAVApp -ServerInstance $ServerInstance -Path $BaseAppPath -SkipVerification
