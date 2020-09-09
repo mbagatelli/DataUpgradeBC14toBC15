@@ -20,13 +20,13 @@ Set-NavServerConfiguration -ServerInstance $ServiceName -KeyName "EnableTaskSche
 Write-Host "4. Restarting NAV Service"
 Restart-NAVServerInstance -ServerInstance $ServiceName
 
-Write-Host "5. UnInstalling All App Installed on Service"
+Write-Host "5. Uninstalling All App Installed on Service"
 Get-NAVAppInfo -ServerInstance $ServiceName | % { Uninstall-NAVApp -ServerInstance $ServiceName -Force -Name $_.Name -Version $_.Version}
 
-Write-Host "6. UnPublishing All Symbol on Service"
+Write-Host "6. Unpublishing All Symbol on Service"
 Get-NAVAppInfo -ServerInstance $ServiceName -SymbolsOnly | % { Unpublish-NAVApp -ServerInstance $ServiceName -Name $_.Name -Version $_.Version }
 
-Write-Host "7. Deleteing Objects Other Than Tables From Database"
+Write-Host "7. Deleting Objects Other Than Tables From Database"
 Delete-NAVApplicationObject -DatabaseName $DatabaseName -DatabaseServer $DatabaseServer -Filter 'Type=Page|Report|Codeunit|Query|Xmlport|MenuSuite;Id=1..2000000000' -SynchronizeSchemaChanges Force
 
 Write-Host "8. Stopping NAV Service"
