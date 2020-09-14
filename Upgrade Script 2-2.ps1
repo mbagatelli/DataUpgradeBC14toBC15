@@ -72,7 +72,7 @@ Write-Host "13. Upgrade Data"
 Start-NAVDataUpgrade -ServerInstance $ServerInstance -FunctionExecutionMode Serial -Force
 
 ## It will stop here, need to wait 3-5m for the data process to finish
-Write-Host "Pausing for 4minutes"
+Write-Host "Pausing for 4 minutes"
 Start-Sleep -Seconds 240
 
 Write-Host "14. Install 3rd party"
