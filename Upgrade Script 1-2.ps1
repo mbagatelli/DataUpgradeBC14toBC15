@@ -11,6 +11,14 @@ Import-Module 'C:\Program Files\Microsoft Dynamics 365 Business Central\140\Serv
 Import-Module 'C:\Program Files (x86)\Microsoft Dynamics 365 Business Central\140\RoleTailored Client\NavModelTools.ps1'
 Import-Module 'C:\Program Files (x86)\Microsoft Dynamics 365 Business Central\140\RoleTailored Client\Microsoft.Dynamics.Nav.Ide.psm1'
 
+Write-Host "1.1. Checking Service Status and Start if not started"
+$ServiceStatus = Get-NAVServerInstance -ServerInstance $ServerInstance
+
+If ($ServiceStatus.State -eq "Stopped")
+{
+    Start-NAVServerInstance -ServerInstance $ServerInstance
+}
+
 Write-Host "2. Importing Developer License"
 Import-NAVServerLicense -LicenseFile $DeveloperLicenseFile -ServerInstance $ServiceName
 
