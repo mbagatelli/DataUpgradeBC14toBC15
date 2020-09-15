@@ -1,7 +1,7 @@
 ﻿###################### Parameters ######################
 $DatabaseServer       = "ARQ-MBG"
 #$DatabaseInstance     = "BC150"
-$DatabaseName         = "GTOGHERMIGRATEDBV14" 
+$DatabaseName         = "GTOGHERMIGRATEDB_14to15" 
 $ServiceName          = "BC150"
 $DeveloperLicenseFile = "C:\Temp\MSDynLicenses\5190281 - D365BC 150 DEV.flf"
 $BC15Version          = "15.8.43801.0"
@@ -9,8 +9,9 @@ $BaseAppPath          = "C:\Temp\Dynamics.365.BC.43801.W1.DVD_BC15\applications\
 $SystemAppPath        = "C:\Program Files (x86)\Microsoft Dynamics 365 Business Central\150\AL Development Environment\System.app"
 $MicrosoftSysPath     = "C:\Temp\Dynamics.365.BC.43801.W1.DVD_BC15\applications\system application\source\Microsoft_System Application.app"
 $MicrosoftApplicPath  = "C:\Temp\Dynamics.365.BC.43801.W1.DVD_BC15\applications\Application\Source\Microsoft_Application.app"
-$CustomAppPath        = "C:\Users\Marco Bagatelli\Documents\AL\BC14toBC15\Growing Together_BC14toBC15_3.0.0.10.app"
-$CustomAppVersion     = "3.0.0.10"
+$CustomAppPath        = "C:\Users\Marco Bagatelli\Documents\AL\BC14toBC15\Growing Together_BC14toBC15_$CustomAppVersion.app"
+$CustomAppName        = "BC14toBC15"
+$CustomAppVersion     = "3.0.0.13"
 $ServerInstance       = "BC150"
 
 ##################################################################
@@ -40,7 +41,7 @@ Write-Host "5. Restarting NAV Service"
 ReStart-NAVServerInstance -ServerInstance $ServerInstance
 
 Write-Host "6. Publishing System App Symbols"
-Publish-NAVApp -ServerInstance $ServerInstance -Path "C:\Program Files (x86)\Microsoft Dynamics 365 Business Central\150\AL Development Environment\System.app" -PackageType SymbolsOnly
+Publish-NAVApp -ServerInstance $ServerInstance -Path $SystemAppPath -PackageType SymbolsOnly
 
 Write-Host "7. Extensions Migration"
 Set-NAVServerConfiguration -ServerInstance $ServerInstance -KeyName "DestinationAppsForMigration" -KeyValue '[{"appId":"63ca2fa4-4f03-4f2b-a480-172fef340d3f", "name":"System Application", "publisher": "Microsoft"}, {"appId":"437dbf0e-84ff-417a-965d-ed2bb9650972", "name":"Base Application", "publisher": "Microsoft"}]'
@@ -53,10 +54,16 @@ Set-NAVApplication -ServerInstance $ServerInstance -ApplicationVersion $BC15Vers
 
 Write-Host "10. Publishing Symbols & Extensions"
 Publish-NAVApp -ServerInstance $ServerInstance -Path $SystemAppPath -PackageType SymbolsOnly
+Write-Host "Done 1-5"
 Publish-NAVApp -ServerInstance $ServerInstance -Path $MicrosoftSysPath
+Write-Host "Done 2-5"
 Publish-NAVApp -ServerInstance $ServerInstance -Path $BaseAppPath -SkipVerification
+Write-Host "Done 3-5"
 Publish-NAVApp -ServerInstance $ServerInstance -Path $MicrosoftApplicPath
+Write-Host "Done 4-5"
 Publish-NAVApp -ServerInstance $ServerInstance -Path $CustomAppPath –SkipVerification
+Write-Host "Done 5-5"
+Write-Host "Restart Server"
 Restart-NAVServerInstance -ServerInstance $ServerInstance
 
 Write-Host "11. Sync"
@@ -66,7 +73,7 @@ Write-Host "12. Sync Apps"
 Sync-NAVApp -ServerInstance $ServerInstance -Name "System Application" -Version $BC15Version 
 Sync-NAVApp -ServerInstance $ServerInstance -Name "Base Application" -Version $BC15Version 
 Sync-NAVApp -ServerInstance $ServerInstance -Name "Application" -Version $BC15Version 
-Sync-NAVApp -ServerInstance $ServerInstance -Name "BC14toBC15" -Version $CustomAppVersion
+Sync-NAVApp -ServerInstance $ServerInstance -Name $CustomAppName -Version $CustomAppVersion #Add <ForceSync> if table remove erros appear
 
 Write-Host "13. Upgrade Data"
 Start-NAVDataUpgrade -ServerInstance $ServerInstance -FunctionExecutionMode Serial -Force
@@ -76,7 +83,7 @@ Write-Host "Pausing for 4 minutes"
 Start-Sleep -Seconds 240
 
 Write-Host "14. Install 3rd party"
-Install-NAVApp -ServerInstance $ServerInstance -Name "BC14toBC15" -Version $CustomAppVersion
+Install-NAVApp -ServerInstance $ServerInstance -Name $CustomAppName -Version $CustomAppVersion
 
 Write-Host "15. Enable task scheduler"
 Set-NavServerConfiguration -ServerInstance $ServerInstance -KeyName "EnableTaskScheduler" -KeyValue true

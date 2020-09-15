@@ -1,6 +1,6 @@
 ﻿###################### Parameters ######################
 $DatabaseServer       = "localhost"
-$DatabaseName         = "GTOGHERMIGRATEDBV14" 
+$DatabaseName         = "GTOGHERMIGRATEDB_14to15" 
 $ServiceName          = "BC140"                        ## Name of Service Mapped to Business Central 14 Database.
 $DeveloperLicenseFile = "C:\Temp\MSDynLicenses\5190281 - D365BC 150 DEV.flf"   ## Developer License
 $NavIde               = "C:\Program Files (x86)\Microsoft Dynamics 365 Business Central\140\RoleTailored Client\finsql.exe"
@@ -16,7 +16,7 @@ $ServiceStatus = Get-NAVServerInstance -ServerInstance $ServerInstance
 
 If ($ServiceStatus.State -eq "Stopped")
 {
-    Start-NAVServerInstance -ServerInstance $ServerInstance
+    Start-NAVServerInstance -ServerInstance $ServiceName
 }
 
 Write-Host "2. Importing Developer License"
